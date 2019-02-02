@@ -53,6 +53,14 @@ class BeaverConfig():
         }
 
         self._main_defaults = {
+            'mongo_connection_string': '',
+            'mongo_db': 'carrouting',
+            'mongo_batch_size': 10,
+            'bss_url':'',
+            'bss_batch_size': 200,
+            'bss_storage_folder': '',
+            'bss_ppnot_product':36,
+            'bss_user_agent':'',
             'kafka_client_id': os.environ.get('KAFKA_CLIENT_ID', 'beaver-kafka'),
             'kafka_hosts': os.environ.get('KAFKA_HOSTS', 'localhost:9092'),
             'kafka_async': os.environ.get('KAFKA_ASYNC', True),
@@ -151,6 +159,9 @@ class BeaverConfig():
 
             # path to sincedb sqlite db
             'sincedb_path': '',
+
+            # size of read chunk
+            'chunk_size': '4096',
 
             # 0 for logstash version < 1.2, 1 for logstash >= 1.2
             'logstash_version': '',
@@ -333,7 +344,11 @@ class BeaverConfig():
                 'kafka_batch_t',
                 'kafka_ack_timeout',
                 'number_of_consumer_processes',
-                'ignore_old_files'
+                'ignore_old_files',
+                'chunk_size',
+                'mongo_batch_size',
+                'bss_batch_size',
+                'bss_ppnot_product'
             ]
             for key in require_int:
                 if config[key] is not None:

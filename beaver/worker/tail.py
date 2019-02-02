@@ -32,6 +32,7 @@ class Tail(BaseLog):
         self._log_template = '[' + self._filename + '] - {0}'
 
         self._sincedb_path = beaver_config.get('sincedb_path')
+        self._chunk_size = beaver_config.get('chunk_size')
 
         self._debug = beaver_config.get_field('debug', filename)  # TODO: Implement me
         self._encoding = beaver_config.get_field('encoding', filename)
@@ -235,16 +236,16 @@ class Tail(BaseLog):
         """Read lines from a file and performs a callback against them"""
         while True:
             try:
-                data = self._file.read(4096)
+                data = self._file.read(self._chunk_size)
             except IOError, e:
                 if e.errno == errno.ESTALE:
                     self.active = False
                     return False
-
-            lines = self._buffer_extract(data)
+            if data != 0:
+                lines = self._buffer_extract(data)
 
             if not lines:
-                # Before returning, check if an event (maybe partial) is waiting for too long.
+                # Before returning, check if an event (maybe partial) is waiting for too long.    
                 if self._current_event and time.time() - self._last_activity > 1:
                     event = '\n'.join(self._current_event)
                     self._current_event.clear()
@@ -266,9 +267,9 @@ class Tail(BaseLog):
             if events:
                 self._callback_wrapper(events)
 
-            if self._sincedb_path:
+            if self._sincedb_path:    
                 current_line_count = len(lines)
-                self._sincedb_update_position(lines=current_line_count)
+                self._sincedb_update_position(lines=current_line_count)  
 
         self._sincedb_update_position()
 

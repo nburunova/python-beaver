@@ -1,3 +1,15 @@
+python-beaver (36.3.5); urgency=low
+
+  * Release version 36.3.5
+
+ -- N Burunova <n.burunova@2gis,ru>  Sun, 11 Nov 2018 23:42:32 +0000
+
+python-beaver (36.3.4.9); urgency=low
+
+  * Release version 36.3.4.9
+
+ -- N Burunova <n.burunova@2gis,ru>  Sun, 2 Nov 2018 23:42:32 +0000
+
 python-beaver (36.3.0) stable; urgency=low
 
   * Release version 36.3.0
